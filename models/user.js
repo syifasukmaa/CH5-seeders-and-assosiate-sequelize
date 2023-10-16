@@ -12,7 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       User.hasOne(models.Auth, {
         foreignKey: {
           name: "userId",
-          allowNull: false,
+        },
+      });
+
+      User.belongsTo(models.Shop, {
+        foreignKey: {
+          name: "shopId",
         },
       });
     }
@@ -26,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "Staff",
       },
       address: DataTypes.STRING,
+      shopId: DataTypes.INTEGER,
     },
     {
       sequelize,
