@@ -34,10 +34,13 @@ const register = async (req, res, next) => {
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
     const hashedConfirmPassword = bcrypt.hashSync(confirmPassword, saltRounds);
 
+    console.log(req.user.shopId);
+
     const newUser = await User.create({
       name,
       address,
       age,
+      shopId: req.user.shopId,
     });
     const test = await Auth.create({
       email,
@@ -98,7 +101,21 @@ const login = async (req, res, next) => {
   }
 };
 
+const authenticate = async (req, res) => {
+  try {
+    res.status(200).json({
+      status: "Success",
+      data: {
+        user: req.user,
+      },
+    });
+  } catch (err) {
+    next(new ApiError(err.message, 500));
+  }
+};
+
 module.exports = {
   register,
   login,
+  authenticate,
 };
